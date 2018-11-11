@@ -1,3 +1,6 @@
+HOPEBot
+-------
+
 Full tutorial video playlist: https://www.youtube.com/playlist?list=PL6kCzBFwnnwnQoZZmjg0UHLyRVqE3cze0
 
 HOPEBot is a Bluetooth-controlled robot capable of moving fast and over rough terrains, withstanding forces and has inverted operation and live feedback capabilities. Also, a version that can be controlled using a wireless game controller is also shown.
