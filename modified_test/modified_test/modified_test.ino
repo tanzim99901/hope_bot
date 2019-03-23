@@ -15,7 +15,7 @@ int X1, Y1, X2, Y2, hat, button, right_joy, left_joy;
 void setup()
 {
   Serial.begin(9600);
-  while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
+  while (!Serial); // Wait for serial port to connect
   Serial.println("Start");
 
   if (Usb.Init() == -1)
@@ -35,9 +35,12 @@ void loop()
 
 void get_joystick()
 {
-  parse_values();
-  correct_right();
+  parse_values();     // parse raw joystick values
+
+  // convert raw values to -255 to 255 range
+  correct_right();    
   correct_left();
+  
   Serial.print(left_joy);
   Serial.print("\t");
   Serial.print(right_joy);
