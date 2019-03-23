@@ -1,5 +1,7 @@
 #include "SoftwareSerial.h"
 
+
+// motor driver pins
 #define in1 47
 #define in2 49
 #define in3 51
@@ -13,7 +15,7 @@
 #define    SLOW         750                            // Datafields refresh rate (ms)
 #define    FAST         250                             // Datafields refresh rate (ms)
 
-SoftwareSerial mySerial(62, 63);                          // BlueTooth module: pin#2=TX pin#3=RX
+SoftwareSerial mySerial(62, 63);                          // (RX Arduino, TX Arduino)
 byte cmd[8] = {0, 0, 0, 0, 0, 0, 0, 0};                 // bytes received
 byte buttonStatus = 0;                                  // first Byte sent to Android device
 long previousMillis = 0;                                // will store last time Buttons status was updated
@@ -87,14 +89,14 @@ String getButtonStatusString()  {
 }
 
 int GetdataInt1()  {              // Data dummy values sent to Android device for demo purpose
-  static int i = -30;             // Replace with your own code
+  static int i = -30;             
   i ++;
   if (i > 0)    i = -30;
   return i;
 }
 
 float GetdataFloat2()  {           // Data dummy values sent to Android device for demo purpose
-  static float i = 50;             // Replace with your own code
+  static float i = 50;             
   i -= .5;
   if (i < -50)    i = 50;
   return i;
@@ -107,31 +109,36 @@ void getJoystickState(byte data[8])    {
   joyY = joyY - 200;                                                  // transmitting negative numbers
 
   if (joyX < -100 || joyX > 100 || joyY < -100 || joyY > 100)     return; // commmunication error
-  if (joyY > 15)
+  
+  if (joyY > 15)      // drive forward
   {
     joyY = map(joyY, 0, 100, 0, 255);
     wheel(joyY, joyY);
     delay(20);
   }
-  else if (joyX < -15)
+  
+  else if (joyX < -15)    // drive left
   {
     joyX = map((joyX) * (-1), 0, 100, 0, 255);
     wheel(-joyX, joyX);
     delay(20);
   }
-  else if (joyX > 15)
+  
+  else if (joyX > 15)     // drive right
   {
     joyX = map(joyX, 0, 100, 0, 255);
     wheel(joyX, -joyX);
     delay(20);
   }
-  else if (joyY < -15 )
+  
+  else if (joyY < -15 )   // drive backward
   {
     joyY = map((joyY) * (-1), 0, 100, 0, 255);
     wheel(-joyY, -joyY);
     delay(20);
   }
-  else if (joyX == 0 && joyY == 0)
+  
+  else if (joyX == 0 && joyY == 0)    // stop
   {
     wheel(0, 0);
     delay(20);
@@ -217,13 +224,13 @@ void getButtonState(int bStatus)  {
       buttonStatus |= B100000;        // ON
       Serial.println("\n** Button_6: ON **");
       // your code...
-      
+
       break;
     case 'L':
       buttonStatus &= B011111;        // OFF
       Serial.println("\n** Button_6: OFF **");
       // your code...
-      
+
       break;
   }
   // ---------------------------------------------------------------
