@@ -5,6 +5,7 @@
 
 #include "hidjoystickrptparser.h"
 
+// motor driver pins
 #define in1 47
 #define in2 49
 #define in3 51
@@ -32,7 +33,7 @@ void setup()
   digitalWrite(in2, HIGH);
   digitalWrite(in3, HIGH);
   digitalWrite(in4, HIGH);
-  while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
+  while (!Serial); // Wait for serial port to connect 
   Serial.println("Start");
 
   if (Usb.Init() == -1)
@@ -47,8 +48,8 @@ void setup()
 void loop()
 {
   Usb.Task();
-  get_joystick();
-  move_robot();
+  get_joystick();   // read joystick values
+  move_robot();     // drive the robot according to joystick values
 }
 
 void move_robot()
@@ -59,9 +60,12 @@ void move_robot()
 
 void get_joystick()
 {
-  parse_values();
+  parse_values();   // read raw joystick values
+
+  // convert raw values to -255 to 255 range
   correct_right();
   correct_left();
+  
   Serial.print(left_joy);
   Serial.print("\t");
   Serial.print(right_joy);
@@ -97,6 +101,8 @@ void parse_values()
   button = JoyEvents.but_par;
 }
 
+
+// motor functions //
 void left_motor(int left_speed)
 {
   if (left_speed == 0)
